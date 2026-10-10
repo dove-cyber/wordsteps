@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#4f6ef7">
+  <title>词阶 WordSteps · 阶段式英语学习</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="logo">词</span>
+        <div class="brand-text">
+          <span class="brand-name" data-i18n="app.name">词阶</span>
+          <span class="brand-sub" data-i18n="app.subtitle">阶段式英语学习</span>
+        </div>
+      </div>
+      <nav class="tabs">
+        <button class="tab active" data-view="home" data-i18n="nav.home">学习</button>
+        <button class="tab" data-view="import" data-i18n="nav.import">导入</button>
+        <button class="tab" data-view="banks" data-i18n="nav.banks">词库</button>
+        <button class="tab" data-view="stats" data-i18n="nav.stats">统计</button>
+      </nav>
+      <div class="top-right">
+        <select id="ui-lang-select" class="select select-sm" title="界面语言" aria-label="UI language"></select>
+        <select id="content-lang-select" class="select select-sm" title="内容语言" aria-label="Content language"></select>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <section id="view-home" class="view"></section>
+    <section id="view-import" class="view hidden"></section>
+    <section id="view-banks" class="view hidden"></section>
+    <section id="view-stats" class="view hidden"></section>
+  </main>
+
+  <section id="study-overlay" class="study-overlay hidden"></section>
+
+  <!-- 第三方库 -->
+  <script src="js/vendor/jszip.min.js"></script>
+  <script src="js/vendor/fsrs.umd.js"></script>
+  <script src="js/vendor/en-ipa.js"></script>
+  <!-- 工具 / 接口 -->
+  <script src="js/util.js"></script>
+  <script src="js/i18n/index.js"></script>
+  <script src="js/i18n/zh.js"></script>
+  <script src="js/i18n/en.js"></script>
+  <script src="js/langs/index.js"></script>
+  <script src="js/langs/en.js"></script>
+  <!-- 核心 -->
+  <script src="js/core/tts-offline.js"></script>
+  <script src="js/core/tts.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/parser.js"></script>
+  <script src="js/core/phonetics.js"></script>
+  <script src="js/core/srs.js"></script>
+  <script src="js/core/wordbank.js"></script>
+  <script src="js/sample-data.js"></script>
+  <!-- 界面 -->
+  <script src="js/ui/home.js"></script>
+  <script src="js/ui/import.js"></script>
+  <script src="js/ui/study.js"></script>
+  <script src="js/ui/stats.js"></script>
+  <script src="js/ui/banks.js"></script>
+  <script src="js/ui/app.js"></script>
+</body>
+</html>

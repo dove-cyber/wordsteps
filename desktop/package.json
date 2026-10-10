@@ -1,0 +1,32 @@
+{
+  "name": "wordsteps-desktop",
+  "version": "0.1.0",
+  "description": "词阶 WordSteps 桌面版(Electron 外壳,加载 web/ 目录)",
+  "author": "鸽浅.strandove",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "sync": "node ../scripts/sync-web.mjs www",
+    "dist": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "^31.3.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.wordsteps.app",
+    "productName": "词阶 WordSteps",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "www/**/*"],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "sign": false,
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  }
+}

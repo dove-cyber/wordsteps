@@ -1,0 +1,12 @@
+{
+  "appId": "com.wordsteps.app",
+  "appName": "词阶 WordSteps",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}

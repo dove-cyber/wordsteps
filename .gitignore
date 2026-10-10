@@ -1,0 +1,35 @@
+# ---------- 依赖 ----------
+node_modules/
+mobile/node_modules/
+desktop/node_modules/
+
+# ---------- 构建产物 / 外壳生成目录 ----------
+desktop/www/
+desktop/dist/
+mobile/www/
+mobile/android/
+dist/
+out/
+build/
+*.apk
+*.aab
+*.exe
+
+# ---------- 训练产物 ----------
+lightning_logs/
+*.ckpt
+voice-out/
+dataset/
+cache/
+*.onnx
+
+# ---------- 日志 / 临时 ----------
+*.log
+pip-*
+.DS_Store
+Thumbs.db
+*.tmp
+
+# ---------- 大型语音运行时(体积大,用 scripts/fetch-voice-runtime.mjs 获取) ----------
+web/js/vendor/sherpa/*.data
+web/js/vendor/sherpa/*.wasm

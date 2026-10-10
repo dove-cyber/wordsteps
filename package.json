@@ -1,0 +1,20 @@
+{
+  "name": "wordsteps",
+  "version": "0.1.0",
+  "description": "词阶 WordSteps —— 兼容 APK / EXE / HTML 三端的阶段式英语学习软件(测试版,预留多语言扩展接口)",
+  "author": "鸽浅.strandove",
+  "private": true,
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "vendor": "node scripts/vendor.mjs",
+    "build:exe": "powershell -ExecutionPolicy Bypass -File scripts/build-exe.ps1",
+    "build:apk": "powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "ts-fsrs": "^5.4.2"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2"
+  }
+}

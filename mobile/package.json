@@ -1,0 +1,19 @@
+{
+  "name": "wordsteps-mobile",
+  "version": "0.1.0",
+  "description": "词阶 WordSteps 移动版(Capacitor 外壳,生成 Android 工程打包 APK)",
+  "author": "鸽浅.strandove",
+  "scripts": {
+    "sync": "node ../scripts/sync-web.mjs www && cap sync android",
+    "add:android": "node ../scripts/sync-web.mjs www && cap add android",
+    "build:apk": "node ../scripts/sync-web.mjs www && cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^6.1.0",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
