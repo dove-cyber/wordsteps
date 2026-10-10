@@ -172,5 +172,7 @@ python scripts/train/train_voice.py --ref <角色音频> --name myvoice --epochs
 
 **词阶 WordSteps** · 作者 **鸽浅.strandove**
 
+MIT License © 2026 鸽浅.strandove
+
 </div>
 
