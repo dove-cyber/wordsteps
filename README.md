@@ -157,7 +157,38 @@ node scripts/fetch-voice-runtime.mjs
 python scripts/train/train_voice.py --ref <角色音频> --name myvoice --epochs 1000
 ```
 
-流程：GPT-SoVITS 零样本克隆 → 批量合成训练集 → Piper(VITS) 训练 → 导出 ONNX（补 `sample_rate` 等元数据）→ `scripts/repack-sherpa-model.mjs` 重打包运行时。详见 `docs/train-voice.md`。
+流程：GPT-SoVITS 零样本克隆 → 批量合成训练集 → Piper(VITS) 微调 → 导出 ONNX（补 `sample_rate` 等元数据）→ 生成配套 `tokens.txt` → `scripts/repack-sherpa-model.mjs` 重打包运行时。
+
+相关脚本：
+
+| 脚本 | 用途 |
+| --- | --- |
+| `train/train_voice.py` | 一键编排（数据集→训练→导出→重打包）|
+| `train/generate_dataset.py` | GPT-SoVITS 克隆合成训练集（支持多参考音频）|
+| `train/finalize_voice.py` | 训练收尾：挑最佳检查点→导出 ONNX→补元数据→生成 tokens→重打包 |
+| `train/make_tokens.py` | 从模型 JSON 生成 sherpa 用的 `tokens.txt` |
+| `train/add_onnx_metadata.py` | 给 ONNX 补 `sample_rate` / `n_speakers` 等元数据 |
+| `train/convert_ckpt.py` | 转换 Linux 上训练的检查点供 Windows 使用 |
+| `train/clean_ckpt_hparams.py` | 清理旧版检查点的超参，使其可作微调起点 |
+| `train/decode_m4s.py` / `analyze_bgm.py` / `pick_refs.py` | 素材解码 / BGM 检测 / 参考片段自动挑选 |
+| `tts-preview.cjs` | 用 sherpa 运行时合成试听 |
+| `finish-voice.ps1` | 训练完成后全自动收尾 |
+
+> 📌 一个已练好的示例音色（独立仓库）：[mygo-chihaya-anon-piper-sherpa-onnx-android-web-english-voice](https://github.com/dove-cyber/mygo-chihaya-anon-piper-sherpa-onnx-android-web-english-voice)
+
+### ⚠️ 训练的三个关键经验（能省几十小时）
+
+1. **训练步数是决定性的。**
+   官方 Piper 音色训练约 **135 万步**。仅训 2~3 万步的模型 `val_mel` 看着正常（0.44），但输出会有**明显宽带噪声**——VITS 的 mel 损失很早就饱和，**噪声靠对抗(GAN)训练慢慢磨掉**。
+   → 优先**从官方检查点微调**（如 `en_US-lessac-medium`），而不是从零训练；把 `max_epochs` 设大，别让学习率过早衰减到 5%。
+
+2. **`tokens.txt` 必须与模型配套，且 sherpa 只接受单字符音素。**
+   用错 tokens 会让音素→ID 错位、音素被丢弃 → 输出电流噪声（不报错，很隐蔽）。sherpa 的 `ReadTokens` 要求音素 UTF-8 解码后长度为 1，`aɪ`/`aʊ`/`eɪ`/`oʊ`/`ɔɪ` 这类合并双元音会被直接拒绝（espeak 默认本就拆开，剔除无影响）。
+
+3. **重打包 `.data` 时务必用同一对 glue + `.data`。**
+   混用（如用上次重打包的 glue 配原始 .data）会导致 espeak-ng-data 全部错位 → 同样表现为电流噪声。`repack-sherpa-model.mjs` 已内置一致性校验拦截此问题。
+
+> 排查听感问题时，**画频谱图比看指标更直接**：宽带噪声在频谱图上一眼可见。
 
 ## 十、测试版已知说明
 

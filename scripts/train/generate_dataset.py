@@ -65,6 +65,7 @@ def main():
     ap.add_argument("--lang", default="en", help="目标语言(默认 en)")
     ap.add_argument("--limit", type=int, default=0, help="只合成前 N 句(0=全部)")
     ap.add_argument("--sample-rate", type=int, default=22050, help="输出采样率(Piper 标准 22050)")
+    ap.add_argument("--aux-refs", default="", help="附加参考音频(逗号分隔),多参考可提升音色稳定性")
     args = ap.parse_args()
 
     if not os.path.isdir(GSV):
@@ -82,6 +83,17 @@ def main():
 
     workdir = tempfile.mkdtemp(prefix="ws-ref-")
     ref = prepare_ref(ref, workdir)
+    aux = []
+    if args.aux_refs:
+        for p in args.aux_refs.split(","):
+            p = p.strip()
+            if not p:
+                continue
+            ap_ = os.path.abspath(p)
+            if os.path.exists(ap_):
+                aux.append(prepare_ref(ap_, workdir))
+    if aux:
+        print("附加参考音频 %d 个" % len(aux))
 
     sys.path.insert(0, GSV)
     sys.path.insert(0, os.path.join(GSV, "GPT_SoVITS"))
@@ -111,6 +123,7 @@ def main():
             "ref_audio_path": ref,
             "prompt_text": "",          # 空 => ref_free 免参考文本
             "prompt_lang": args.lang,
+            "aux_ref_audio_paths": aux,
             "top_k": 15,
             "top_p": 1.0,
             "temperature": 1.0,
